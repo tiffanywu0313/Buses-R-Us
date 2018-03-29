@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import ca.ubc.cs.cpsc210.translink.model.Stop;
 import ca.ubc.cs.cpsc210.translink.model.StopManager;
+import ca.ubc.cs.cpsc210.translink.model.exception.StopException;
 import ca.ubc.cs.cpsc210.translink.parsers.ArrivalsParser;
 import ca.ubc.cs.cpsc210.translink.parsers.BusParser;
 import ca.ubc.cs.cpsc210.translink.parsers.exception.ArrivalsDataMissingException;
@@ -46,6 +47,11 @@ public class BusesAreUs extends Activity implements LocationListener, StopSelect
         super.onCreate(savedInstanceState);
         Log.i(TSA_TAG, "onCreate");
 
+//        System.out.println("Tiffany says HI!");
+//        Log.d("Tiff says", "I'm debugging");
+//        Log.e("Tiff says", "this is error");
+//        Log.i("Tiff says", "info");
+
         setContentView(R.layout.map_layout);
         myNearestStop = null;
 
@@ -56,6 +62,8 @@ public class BusesAreUs extends Activity implements LocationListener, StopSelect
             actionBar.setDisplayShowTitleEnabled(true);
             actionBar.setHomeButtonEnabled(false);
         }
+
+//        throw new RuntimeException("Tiff says: I am an Exceptional exception");
     }
 
     /**
@@ -110,6 +118,11 @@ public class BusesAreUs extends Activity implements LocationListener, StopSelect
     @Override
     public void onLocationChanged(Stop nearest, LatLon locn) {
         // TODO: Complete the implementation of this method (Task 6)
+        if (nearest == null) {
+            nearestStopLabel = null;
+        } else {
+            nearestStopLabel.setText(nearest.getName());
+        }
     }
 
     @Override
@@ -150,6 +163,11 @@ public class BusesAreUs extends Activity implements LocationListener, StopSelect
     @Override
     public void onStopSelected(Stop stop) {
         // TODO: Complete the implementation of this method (Task 7)
+        try {
+            StopManager.getInstance().setSelected(stop);
+        } catch (StopException e) {
+            System.out.println("Caught StopException");
+        }
     }
 
     /**

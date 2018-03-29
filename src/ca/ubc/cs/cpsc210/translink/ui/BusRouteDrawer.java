@@ -2,14 +2,17 @@ package ca.ubc.cs.cpsc210.translink.ui;
 
 import android.content.Context;
 import ca.ubc.cs.cpsc210.translink.BusesAreUs;
+import ca.ubc.cs.cpsc210.translink.model.Route;
+import ca.ubc.cs.cpsc210.translink.model.RoutePattern;
+import ca.ubc.cs.cpsc210.translink.model.Stop;
+import ca.ubc.cs.cpsc210.translink.model.StopManager;
+import ca.ubc.cs.cpsc210.translink.util.Geometry;
 import org.osmdroid.DefaultResourceProxyImpl;
 import org.osmdroid.ResourceProxy;
 import org.osmdroid.bonuspack.overlays.Polyline;
 import org.osmdroid.views.MapView;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 // A bus route drawer
 public class BusRouteDrawer extends MapViewOverlay {
@@ -39,6 +42,22 @@ public class BusRouteDrawer extends MapViewOverlay {
      */
     public void plotRoutes(int zoomLevel) {
         //TODO: complete the implementation of this method (Task 7)
+        Stop stop = StopManager.getInstance().getSelected();
+        if (!(stop == null)) {
+            Set<Route> routes = stop.getRoutes();
+            for (Route r : routes) {
+                List<RoutePattern> routePatterns = r.getPatterns();
+                for (RoutePattern rp : routePatterns);{
+//                    Polyline.
+                    for (Polyline p : busRouteOverlays) {
+                        updateVisibleArea();
+                        if (Geometry.rectangleIntersectsLine(northWest, southEast, northWest, southEast)) {
+                            p.setWidth(getLineWidth(zoomLevel));
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public List<Polyline> getBusRouteOverlays() {
