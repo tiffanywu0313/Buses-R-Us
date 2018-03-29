@@ -7,9 +7,11 @@ import ca.ubc.cs.cpsc210.translink.model.RoutePattern;
 import ca.ubc.cs.cpsc210.translink.model.Stop;
 import ca.ubc.cs.cpsc210.translink.model.StopManager;
 import ca.ubc.cs.cpsc210.translink.util.Geometry;
+import ca.ubc.cs.cpsc210.translink.util.LatLon;
 import org.osmdroid.DefaultResourceProxyImpl;
 import org.osmdroid.ResourceProxy;
 import org.osmdroid.bonuspack.overlays.Polyline;
+import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 
 import java.util.*;
@@ -41,18 +43,35 @@ public class BusRouteDrawer extends MapViewOverlay {
      * Plot each visible segment of each route pattern of each route going through the selected stop.
      */
     public void plotRoutes(int zoomLevel) {
-        //TODO: complete the implementation of this method (Task 7)
+        updateVisibleArea();
+        busRouteOverlays.clear();
+        busRouteLegendOverlay.clear();
         Stop stop = StopManager.getInstance().getSelected();
         if (!(stop == null)) {
             Set<Route> routes = stop.getRoutes();
+
             for (Route r : routes) {
                 List<RoutePattern> routePatterns = r.getPatterns();
-                for (RoutePattern rp : routePatterns);{
-//                    Polyline.
-                    for (Polyline p : busRouteOverlays) {
-                        updateVisibleArea();
-                        if (Geometry.rectangleIntersectsLine(northWest, southEast, northWest, southEast)) {
+                busRouteLegendOverlay.add(r.getNumber());
+
+                for (RoutePattern routePattern : routePatterns) {
+                    List<LatLon> LatLons = routePattern.getPath();
+
+                    for (int i = 0; i < LatLons.size()-1; i++) {
+                        if (Geometry.rectangleIntersectsLine(northWest, southEast, LatLons.get(i), LatLons.get(i + 1))) {
+                            Polyline p = new Polyline (context);
                             p.setWidth(getLineWidth(zoomLevel));
+
+                            GeoPoint gp1 = Geometry.gpFromLatLon(LatLons.get(i));
+                            GeoPoint gp2 = Geometry.gpFromLatLon(LatLons.get(i + 1));
+
+                            List<GeoPoint> gps = new ArrayList<>();
+                            gps.add(gp1);
+                            gps.add(gp2);
+                            p.setPoints(gps);
+
+                            p.setColor(busRouteLegendOverlay.getColor(r.getNumber()));
+                            busRouteOverlays.add(p);
                         }
                     }
                 }

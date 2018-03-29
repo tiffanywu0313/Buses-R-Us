@@ -2,6 +2,9 @@ package ca.ubc.cs.cpsc210.translink.ui;
 
 import android.content.Context;
 import ca.ubc.cs.cpsc210.translink.R;
+import ca.ubc.cs.cpsc210.translink.model.Bus;
+import ca.ubc.cs.cpsc210.translink.model.Stop;
+import ca.ubc.cs.cpsc210.translink.model.StopManager;
 import org.osmdroid.DefaultResourceProxyImpl;
 import org.osmdroid.ResourceProxy;
 import org.osmdroid.views.MapView;
@@ -37,7 +40,10 @@ public class BusLocationPlotter extends MapViewOverlay {
      */
     public void plotBuses() {
         // TODO: complete the implementation of this method (Task 10)
-
+        Stop stop = StopManager.getInstance().getSelected();
+        if (!(stop == null)){
+            stop.getBuses();
+        }
     }
 
     /**

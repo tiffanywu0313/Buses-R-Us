@@ -297,7 +297,6 @@ public class MapDisplayFragment extends Fragment implements MapEventsReceiver, I
      * @param location the location of the user
      */
     private void handleLocationChange(Location location) {
-        // TODO: complete the implementation of this method (Task 6)
         LatLon here = new LatLon(location.getLatitude(),location.getLongitude());
         Stop nearest = StopManager.getInstance().findNearestTo(here);
         locationListener.onLocationChanged(nearest,here);
