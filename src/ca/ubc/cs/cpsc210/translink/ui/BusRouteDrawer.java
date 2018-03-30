@@ -55,15 +55,16 @@ public class BusRouteDrawer extends MapViewOverlay {
                 busRouteLegendOverlay.add(r.getNumber());
 
                 for (RoutePattern routePattern : routePatterns) {
-                    List<LatLon> LatLons = routePattern.getPath();
+                    List<LatLon> latLons = routePattern.getPath();
 
-                    for (int i = 0; i < LatLons.size()-1; i++) {
-                        if (Geometry.rectangleIntersectsLine(northWest, southEast, LatLons.get(i), LatLons.get(i + 1))) {
-                            Polyline p = new Polyline (context);
+                    for (int i = 0; i < latLons.size() - 1; i++) {
+                        if (Geometry.rectangleIntersectsLine(northWest, southEast,
+                                latLons.get(i), latLons.get(i + 1))) {
+                            Polyline p = new Polyline(context);
                             p.setWidth(getLineWidth(zoomLevel));
 
-                            GeoPoint gp1 = Geometry.gpFromLatLon(LatLons.get(i));
-                            GeoPoint gp2 = Geometry.gpFromLatLon(LatLons.get(i + 1));
+                            GeoPoint gp1 = Geometry.gpFromLatLon(latLons.get(i));
+                            GeoPoint gp2 = Geometry.gpFromLatLon(latLons.get(i + 1));
 
                             List<GeoPoint> gps = new ArrayList<>();
                             gps.add(gp1);

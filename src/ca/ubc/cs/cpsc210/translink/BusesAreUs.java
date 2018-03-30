@@ -163,6 +163,7 @@ public class BusesAreUs extends Activity implements LocationListener, StopSelect
     public void onStopSelected(Stop stop) {
         try {
             StopManager.getInstance().setSelected(stop);
+            new DownloadBusLocationDataTask();
         } catch (StopException e) {
             System.out.println("Caught StopException");
         }

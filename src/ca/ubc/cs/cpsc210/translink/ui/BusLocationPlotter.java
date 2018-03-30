@@ -5,8 +5,10 @@ import ca.ubc.cs.cpsc210.translink.R;
 import ca.ubc.cs.cpsc210.translink.model.Bus;
 import ca.ubc.cs.cpsc210.translink.model.Stop;
 import ca.ubc.cs.cpsc210.translink.model.StopManager;
+import ca.ubc.cs.cpsc210.translink.util.Geometry;
 import org.osmdroid.DefaultResourceProxyImpl;
 import org.osmdroid.ResourceProxy;
+import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
@@ -39,10 +41,14 @@ public class BusLocationPlotter extends MapViewOverlay {
      * Plot buses serving selected stop
      */
     public void plotBuses() {
-        // TODO: complete the implementation of this method (Task 10)
         Stop stop = StopManager.getInstance().getSelected();
-        if (!(stop == null)){
-            stop.getBuses();
+        if (!(stop == null)) {
+            for (Bus b : stop.getBuses()) {
+                GeoPoint gp = Geometry.gpFromLatLon(b.getLatLon());
+                String dest = b.getDestination();
+                String info = b.getRoute() + b.getTime();
+                busLocationsOverlay.addItem(new OverlayItem(dest, info, gp));
+            }
         }
     }
 
