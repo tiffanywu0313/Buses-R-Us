@@ -52,6 +52,7 @@ public class BusLocationPlotter extends MapViewOverlay {
         }
     }
 
+
     /**
      * Create the overlay for bus markers.
      */
